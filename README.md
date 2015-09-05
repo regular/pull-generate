@@ -30,7 +30,9 @@ output
 `expand` is called with `initialstate` and a callback.
 
 The callback has the following signature:
-callback(err, newState, data)
+
+`callback(err, newState, data)`
+
 An `err` value of `ture` indicates the end of the stream. Tne value of `newState` is used as `state` in the next call to `expand`. The value of `data` is send downstream.
 
 ## License
