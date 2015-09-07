@@ -27,7 +27,7 @@ function arrayReader (read, cb) {
 
 tape('basics', function (t) {
   var read = generate(1, function(state, cb) {
-    cb(state>3 ? true : null, state + 1, state)
+    cb(state>3 ? true : null, state, state + 1)
   })
   read(null, function (e, d) {
     t.ok(e == null, 'nullish')
@@ -51,7 +51,7 @@ tape('basics', function (t) {
 tape('generate', function (t) {
   var array = [1, 2, 3]
   var read = generate(1, function(state, cb) {
-    cb(state>3 ? true : null, state + 1, state)
+    cb(state>3 ? true : null, state, state + 1)
   })
   arrayReader(read, function (err, _array) {
       console.log('END?')
@@ -63,7 +63,7 @@ tape('generate', function (t) {
 tape('pipe', function (t) {
   var array = [1, 2, 3]
   var read = pipeableSource(generate)(1, function(state, cb) {
-    cb(state>3 ? true : null, state + 1, state)
+    cb(state>3 ? true : null, state, state + 1)
   })
  
   t.equal('function', typeof read)
@@ -79,7 +79,7 @@ tape('pipe', function (t) {
 tape('pipe2', function (t) {
   var array = [1, 2, 3]
   var read = pipeableSource(generate)(1, function(state, cb) {
-    cb(state>3 ? true : null, state + 1, state)
+    cb(state>3 ? true : null, state, state + 1)
   })
   arrayWriter = pull.writeArray
 

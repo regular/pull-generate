@@ -13,7 +13,7 @@ module.exports = function (initialState, expand, onAbort) {
     if(abort)
       return abortCb(cb, abort, onAbort)
 
-    expand(state, function(err, newState, data) {
+    expand(state, function(err, data, newState) {
       state = newState
       cb(err, err ? null : data)
     })
