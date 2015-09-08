@@ -1,5 +1,5 @@
 # pull-generate
-pull-stream source that produces data on state transitions
+A [pull-stream](https://github.com/dominictarr/pull-stream) source that produces data on state transitions
 
 ## Simple Example
 
@@ -14,26 +14,23 @@ pull(
     pull.log()
 )
 
-```
-output
-```
-1
-2
-4
-8
+// ==> 1 2 4 8
 ```
 
 ## Usage
 
-`generate(initialState, expand [, onAbort])`
+### `generate(initialState, expand [, onAbort])`
 
-`expand` is called with `initialstate` and a callback.
-
-The callback has the following signature:
-
-`callback(err, data, newState)`
-
-An `err` value of `ture` indicates the end of the stream. Tne value of `newState` is used as `state` in the next call to `expand`. The value of `data` is send downstream.
+- `expand`: function that is called with `initialstate` and a callback.
+  - the callback has the following signature: `callback(err, data, newState)`
+      - `err`
+        - `null` to pass `data` downstream (normal operation)
+        - `true` indicates the end of the stream
+        - everything else is treated as an error
+      - `data` is send downstream (only if err === null)
+      - `newState` is used as `state` in the next call to `expand`.
+- onAbort: optional function that is called after the stream ended
+  - is called with `null` or an error object
 
 ## License
 MIT
