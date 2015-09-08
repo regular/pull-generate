@@ -1,4 +1,3 @@
-// jshint -W033
 var generate = require('./')
 var pull = require('pull-stream')
 
