@@ -1,6 +1,6 @@
 {
   "name": "pull-generate",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "pull-stream source that produces data on state transitions",
   "main": "index.js",
   "scripts": {
