@@ -3,19 +3,20 @@
 function abortCb(cb, abort, onAbort) {
   cb(abort)
   onAbort && onAbort(abort === true ? null: abort)
-  return
 }
 
 var generate =
 module.exports = function (initialState, expand, onAbort) {
-  var state = initialState
-  return function (abort, cb) {
-    if(abort)
-      return abortCb(cb, abort, onAbort)
+  var state = initialState, ended
 
-    expand(state, function(err, data, newState) {
+  return function (abort, cb) {
+    if (ended) cb(ended)
+    else if (ended = abort) abortCb(cb, abort, onAbort)
+    else expand(state, function(err, data, newState) {
       state = newState
-      cb(err, err ? null : data)
+      if (ended = err) abortCb(cb, err, onAbort)
+      else
+        cb(null, data)
     })
   }
 }

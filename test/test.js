@@ -106,3 +106,41 @@ tape('pipe2', function (t) {
 
 })
 
+tape('passes expand err downstream', function (t) {
+  var err = new Error('boom'), endErr
+  var onEndCount = 0
+  var read = generate(1, function(state, cb) {
+    cb(state>3 ? err : null, state, state + 1)
+  }, function(endErr) {
+    console.log('onEnd')
+    onEndCount++
+    t.equal(endErr, err)
+    t.equal(onEndCount, 1)
+    process.nextTick(function() {
+      t.end()
+    })
+  })
+  read(null, function (e, d) {
+    t.ok(e == null, 'nullish')
+    t.equal(d, 1)
+    read(null, function (e, d) {
+      t.ok(e == null, 'nullish')
+      t.equal(d, 2)
+      read(null, function (e, d) {
+        t.ok(e == null, 'nullish')
+        t.equal(d, 3)
+        read(null, function (e, d) {
+          t.equal(e, err)
+          t.ok(d == null, 'nullish')
+          read(null, function (e, d) {
+            console.log('end')
+            t.equal(e, err)
+            t.ok(d == null, 'nullish')
+          })
+        })
+      })
+    })
+  })
+})
+
+
